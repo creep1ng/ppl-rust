@@ -22,6 +22,30 @@ impl<'a> Lexer<'a> {
     /// Returns the next token from the input source.
     pub fn next_token(&mut self) -> Token {
         let token = match self.character {
+            Some('(') => Token {
+                token_type: TokenType::LParen,
+                literal: self.character,
+            },
+            Some(')') => Token {
+                token_type: TokenType::RParen,
+                literal: self.character,
+            },
+            Some('{') => Token {
+                token_type: TokenType::LBrace,
+                literal: self.character,
+            },
+            Some('}') => Token {
+                token_type: TokenType::RBrace,
+                literal: self.character,
+            },
+            Some(',') => Token {
+                token_type: TokenType::Comma,
+                literal: self.character,
+            },
+            Some(';') => Token {
+                token_type: TokenType::Semicolon,
+                literal: self.character,
+            },
             Some('+') => Token {
                 token_type: TokenType::Plus,
                 literal: self.character,
