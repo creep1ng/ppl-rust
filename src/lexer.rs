@@ -1,16 +1,10 @@
-use crate::token::{self, Token, TokenType};
-use regex::Regex;
+use crate::token::{Token, TokenType};
 
 pub struct Lexer<'a> {
     source: &'a str,
     character: Option<char>,
     read_position: u32,
     position: u32,
-}
-
-fn matches_char(pattern: &str, c: char) -> bool {
-    let text = c.to_string();
-    Regex::new(pattern).unwrap().is_match(&text)
 }
 
 impl<'a> Lexer<'a> {
@@ -27,24 +21,24 @@ impl<'a> Lexer<'a> {
 
     /// Returns the next token from the input source.
     pub fn next_token(&mut self) -> Token {
-        let token: Token;
-        if matches_char(r"^=$", self.character.unwrap()) {
-            token = Token {
-                token_type: TokenType::Assign,
-                literal: self.character,
-            }
-        } else if matches_char(r"^\+$", self.character.unwrap()) {
-            token = Token {
+        let token = match self.character {
+            Some('+') => Token {
                 token_type: TokenType::Plus,
                 literal: self.character,
-            }
-        } else {
-            // Base case
-            token = Token {
+            },
+            Some('=') => Token {
+                token_type: TokenType::Assign,
+                literal: self.character,
+            },
+            Some(_) => Token {
                 token_type: TokenType::Illegal,
                 literal: self.character,
-            };
-        }
+            },
+            None => Token {
+                token_type: TokenType::EOF,
+                literal: None,
+            },
+        };
         self.read_character();
         token
     }
