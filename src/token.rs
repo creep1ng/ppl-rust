@@ -1,6 +1,7 @@
 use core::fmt;
 
-enum TokenType {
+#[derive(Debug, PartialEq)]
+pub enum TokenType {
     Assign,
     Comma,
     EOF,
@@ -17,9 +18,10 @@ enum TokenType {
     Semicolon,
 }
 
-struct Token<'a> {
-    token_type: TokenType,
-    literal: &'a str,
+#[derive(Debug, PartialEq)]
+pub struct Token {
+    pub token_type: TokenType,
+    pub literal: Option<char>,
 }
 
 impl fmt::Display for TokenType {
@@ -43,12 +45,13 @@ impl fmt::Display for TokenType {
     }
 }
 
-impl<'a> fmt::Display for Token<'a> {
+impl fmt::Display for Token {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
             "TokenType: {}, literal: {}",
-            self.token_type, self.literal
+            self.token_type,
+            self.literal.unwrap_or_default()
         )
     }
 }
